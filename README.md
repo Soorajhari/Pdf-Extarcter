@@ -4,7 +4,7 @@ has a good user interface.
 
 Clone or fork this repository to your local machine:
 
-https://github.com/Soorajhari/Pdf-Extarcter.git
+https://github.com/Soorajhari/Pdf-Extracter.git
 
 **Prerequisites**
 The service must be installed
