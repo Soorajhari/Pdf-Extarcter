@@ -12,6 +12,8 @@ The service must be installed
 - [Git](https://git-scm.com/downloads)
 - [Node.js](https://nodejs.org/en/download/)
 
+
 **Developmentmode**
 1. `$ npm start`
+2. Open http://localhost:3000 to view it in the browser.
   
