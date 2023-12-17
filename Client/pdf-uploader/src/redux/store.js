@@ -4,27 +4,24 @@ import pdfExtractedData from './Extractedfile'
 import storage from 'redux-persist/lib/storage'
 import {persistReducer} from 'redux-persist'
 import { combineReducers } from '@reduxjs/toolkit'
-// import persistReducer from 'redux-persist/es/persistReducer'
+import authReducer from "./userDetails"
 
 const persistConfig={
-    key:"root",
+    key:"extractedData",
     version:1,
     storage
 }
 
+const extractedDataPersistedReducer = persistReducer(persistConfig, pdfExtractedData)
+
 const reducer=combineReducers({
     pdfData:pdfInfo,
-    extractedData:pdfExtractedData
-
+    extractedData:extractedDataPersistedReducer,
+    authSlice:authReducer,
 })
 
-const persistedReducer=persistReducer(persistConfig,reducer)
-
-
 const store= configureStore({
-    reducer: persistedReducer
-      
-    
+    reducer: reducer
 })
 
 export default store

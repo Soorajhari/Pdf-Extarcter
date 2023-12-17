@@ -1,3 +1,4 @@
+import Signup from "./component/auth/Signup";
 import ExtractPdf from "./component/design/ExtractPdf";
 import Home from "./component/design/Nav";
 import Pdf from "./component/design/Pdf";
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<MainHome />} />
           <Route path="/extract" element={<Pdf />} />
           <Route path="/download" element={<ExtractPdf />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </Router>
     </div>
