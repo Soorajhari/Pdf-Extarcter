@@ -8,7 +8,7 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./mypdf.css";
 
 const ExtractPdf = () => {
-  const defaultLayoutPluginInstance = defaultLayoutPlugin();
+  const defaultLayoutPluginInstance = defaultLayoutPlugin(); // from react-pdf-viewer
 
   const { pdfData } = useSelector((state) => state.extractedData);
   console.log(pdfData);

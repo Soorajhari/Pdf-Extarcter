@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
+import {  useDispatch } from "react-redux";
 import { pdfjs } from "react-pdf";
 import PdfComp from "./PdfView";
 import { pdfData } from "../../redux/File";
 import Error from "./Error";
+import instance from "../../utils/axios";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
@@ -15,7 +15,7 @@ const Pdf = () => {
   const [file, setFile] = useState(null);
   const [errors,setErrors]=useState(null)
 
-  // const { pdfInfo } = useSelector((state) => state.pdfData);
+ 
   const pdfId = JSON.parse(localStorage.getItem("Details"));
   console.log(pdfId);
 
@@ -25,7 +25,7 @@ const Pdf = () => {
       const fetchData = async () => {
         const id = pdfId.id;
         console.log(id);
-        const response = await axios.get(`http://localhost:5000/details/${id}`);
+        const response = await instance.get(`/details/${id}`);
         console.log(response);
 
         if (response.data.status === "ok") {

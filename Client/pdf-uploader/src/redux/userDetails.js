@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   loading: false,
@@ -7,9 +7,7 @@ const initialState = {
     lastNmae: "",
     email: "",
     mobile: "",
-  
   },
-
 
   error: false,
 };
@@ -21,17 +19,16 @@ const authSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
-    setError: (state, action) => {
+    setErrors: (state, action) => {
       state.error = action.payload;
-    
     },
     signUpData: (state, action) => {
       state.userInfo = action.payload;
-    //   state.loading = action.payload;
+ 
     },
   },
 });
 
-export const { setLoading, setError, signUpData } = authSlice.actions;
+export const { setLoading, setErrors, signUpData } = authSlice.actions;
 
 export default authSlice.reducer;

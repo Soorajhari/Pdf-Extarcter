@@ -14,7 +14,7 @@ const getFile = async (req, res) => {
       path,
       size,
     } = req.file;
-    console.log(req.file);
+    console.log(req.file); //  getting uploaded file details  from clientside
 
     const pdfData = new PdfModel({
       fieldname,
@@ -27,7 +27,7 @@ const getFile = async (req, res) => {
       size,
     });
 
-    await pdfData.save();
+    await pdfData.save(); // svae in database
     res.json({
       status: "ok",
       _id: pdfData._id,
@@ -48,8 +48,8 @@ const getFile = async (req, res) => {
 
 const fileData = async (req, res) => {
   try {
-    const id = req.params.id;
-    console.log(id);
+    const id = req.params.id; // getting id from clientside
+    // console.log(id);
 
     if (!id) {
       return res.status(400).json({ error: "ID is missing" });
@@ -62,7 +62,7 @@ const fileData = async (req, res) => {
     const filePath = pdfDetails.path;
     const buffer = await fs.readFileSync(filePath);
     const base64Data = Buffer.from(buffer).toString("base64");
-    res.json({
+    res.json({                           // sending details to clientside
       status: "ok",
       data: base64Data,
       _id: pdfDetails._id,
@@ -86,7 +86,7 @@ const extarctedFile = async (req, res) => {
   try {
     const id = req.body._id;
     console.log(id + "sree");
-    const selectedPages = req.body.selectedpages;
+    const selectedPages = req.body.selectedpages; // getting number of pages from client side
     if (!id && selectedPages) {
       return res.status(400).json({ error: "ID is missing" });
     }
@@ -98,7 +98,7 @@ const extarctedFile = async (req, res) => {
     }
     const filePath = pdfDetails.filename;
     const uploadedPdfPath = `src/public/pdFiles/${filePath}`;
-    const pdfDoc = await PDFDocument.load(fs.readFileSync(uploadedPdfPath)); //here using pdf-lib liberary
+    const pdfDoc = await PDFDocument.load(fs.readFileSync(uploadedPdfPath)); //here using pdf-lib liberary for extracting pages and cretae a new pdf
 
     const extractedPdfDoc = await PDFDocument.create();
     for (const pageNumber of selectedPages) {

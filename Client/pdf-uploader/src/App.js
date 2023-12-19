@@ -1,9 +1,12 @@
+import Login from "./component/auth/Login";
+import OTPForm from "./component/auth/Otp";
 import Signup from "./component/auth/Signup";
 import ExtractPdf from "./component/design/ExtractPdf";
-import Home from "./component/design/Nav";
 import Pdf from "./component/design/Pdf";
-import MainHome from "./component/pages/MainHome";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Landing from "./pages/Landing";
+import MainHome from "./pages/MainHome";
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import PrivateRoutes from "./component/auth/PrivateRoutes";
 
 function App() {
   return (
@@ -11,10 +14,13 @@ function App() {
   
       <Router>
         <Routes>
-          <Route path="/" element={<MainHome />} />
-          <Route path="/extract" element={<Pdf />} />
-          <Route path="/download" element={<ExtractPdf />} />
+          <Route path="/" element={<  Landing />} />
+          <Route path="/home" element={<PrivateRoutes component={MainHome} />} />
+          <Route path="/extract" element={<PrivateRoutes component={Pdf}/>} />
+          <Route path="/download" element={<PrivateRoutes component={ExtractPdf}/>} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/otp" element={<OTPForm />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     </div>

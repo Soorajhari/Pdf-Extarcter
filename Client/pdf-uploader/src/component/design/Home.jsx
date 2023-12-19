@@ -5,17 +5,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { pdfData,setLoading,setError } from "../../redux/File";
 import Spin from "./Spinner";
 import Error from "./Error";
+import { storagePdfData } from "../../functions/localStorage";
   
 const Home = () => {
   const [file, setFile] = useState(null);
   const [errors,setErrors]=useState(null)
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-const {loading,error}=useSelector((state)=>state.pdfData)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+const {loading}=useSelector((state)=>state.pdfData)
 
 const handleFileChange=(e)=>{
   const selectedFile = e.target.files[0];
+  console.log(selectedFile)
   if (selectedFile && selectedFile.type === 'application/pdf') {
     setFile(selectedFile);
     setError(null);
@@ -24,49 +27,60 @@ const handleFileChange=(e)=>{
   }
 };
 
-
-
+// const user=JSON.parse(localStorage.getItem("user"))
+const {userInfo}=useSelector((state)=>state.loginData)
+console.log(userInfo)
   const handleSubmit = async (e) => {// submiting file to the server side
-
-    dispatch(setLoading(true));
-    try {
-
-      e.preventDefault();
-      const formdata = new FormData();// send file as formData
-      formdata.append("files", file);
-
-      const response = await instance.post("/upload-pdf", formdata);
+    e.preventDefault();
+    if(userInfo){
+      dispatch(setLoading(true));
+      try {
   
-      if (response.data.status == "ok") {
-        console.log(response.data._id);
-        const details={
-          id:response.data._id
+  
+        const formdata = new FormData();// send file as formData
+        formdata.append("files", file);
+        
+        const response = await instance.post("/upload-pdf", formdata);
+    
+        if (response.data.status == "ok") {
+          console.log(response.data._id);
+          const details={
+            id:response.data._id
+          }
+          storagePdfData(details)
+          dispatch(
+            pdfData({
+              id: response.data._id,
+              fieldname: response.data.fieldname,
+              originalname: response.data.originalname,
+              encoding: response.data.encoding,
+              mimetype: response.data.mimetype,
+              destination: response.data.destination,
+              filename: response.data.filename,
+              path: response.data.path,
+              size: response.data.size,
+            })
+          );
+          navigate("/extract");
+        }else{
+          setErrors(response.data.error)
         }
-        localStorage.setItem("Details",JSON.stringify(details))
-        dispatch(
-          pdfData({
-            id: response.data._id,
-            fieldname: response.data.fieldname,
-            originalname: response.data.originalname,
-            encoding: response.data.encoding,
-            mimetype: response.data.mimetype,
-            destination: response.data.destination,
-            filename: response.data.filename,
-            path: response.data.path,
-            size: response.data.size,
-          })
-        );
-        navigate("/extract");
-      }else{
-        setErrors(response.data.error)
+      } catch (error) {
+        console.log(error.message);
+        dispatch(setError(true));
+      }finally{
+        dispatch(setLoading(false));
       }
-    } catch (error) {
-      console.log(error.message);
-      dispatch(setError(true));
-    }finally{
-      dispatch(setLoading(false));
+    }else{
+      { file ? navigate("/login"): navigate("/")}
+    
     }
-  };
+
+   
+  }
+
+
+
 
   return (
     <>
@@ -93,7 +107,7 @@ const handleFileChange=(e)=>{
                 type="file"
                 className="hidden"
                 name="files"
-                accept=".pdf"
+                accept=".pdf" 
               />
             </label>
           </div>

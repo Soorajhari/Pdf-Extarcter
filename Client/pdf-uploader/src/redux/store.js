@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage'
 import {persistReducer} from 'redux-persist'
 import { combineReducers } from '@reduxjs/toolkit'
 import authReducer from "./userDetails"
+import loginDetails from './userLogin'
 
 const persistConfig={
     key:"extractedData",
@@ -18,6 +19,7 @@ const reducer=combineReducers({
     pdfData:pdfInfo,
     extractedData:extractedDataPersistedReducer,
     authSlice:authReducer,
+    loginData:loginDetails
 })
 
 const store= configureStore({

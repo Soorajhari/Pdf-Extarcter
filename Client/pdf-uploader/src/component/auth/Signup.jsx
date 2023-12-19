@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FaRegEnvelope } from "react-icons/fa";
-// import {FaRegEnvelope} from 'react-icons/fa'
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { signUpData, setError, setLoading } from "../../redux/userDetails";
+import { signUpData, setErrors, setLoading } from "../../redux/userDetails";
 import instance from "../../utils/axios";
+import validate from "../../hooks/useValidation";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -25,13 +25,22 @@ const Signup = () => {
 
   console.log(userData);
 
+  useEffect(() => {
+    if (Object.keys(error).length === 0 && isSubmit) {
+      navigate("/otp");
+   
+    }
+    
+  }, [isSubmit,error]);
+
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
   };
 
+
   const handleSubmit = async (e) => {
-    dispatch(setLoading({ type: "SET_LOADING", payload: true }));
+    dispatch(setLoading({ type: "SET_LOADING", payload: true }));// set loading sttaus to redux
     try {
       e.preventDefault();
 
@@ -39,50 +48,24 @@ const Signup = () => {
       setIsSubmit(true);
 
       if (Object.keys(error).length === 0) {
-        const response = await instance.post("/signup", {
+        const response = await instance.post("/signup", { //send details to backend
           userData,
         });
         console.log(response.data);
         if (response.data.status == "ok") {
-          dispatch(signUpData(userData));
-          navigate("/");
+          dispatch(signUpData(userData)); // et data to the redux store
+       
         }
       }
     } catch (error) {
       console.log(error.message);
-      dispatch(setError({ type: "ERROR", payload: true }));
+      dispatch(setErrors({ type: "ERROR", payload: true }));
     } finally {
       dispatch(setLoading({ type: "SET_LOADING", payload: false }));
     }
   };
-  function validate(values) {
-    const errors = {};
-    const regex = /^[a-zA-Z]{3,16}$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const mobileRegex = /^\d{10}$/;
-    if (values.firstName.length < 2) {
-      errors.firstName = "name is too short";
-    } else if (!values.firstName.match(regex)) {
-      errors.firstName = "Invalid form first name can be 3 to 16 characters ";
-    }
-    if (!emailRegex.test(values.email)) {
-      errors.email = "Invalid form write a valid email";
-    }
 
-    if (!mobileRegex.test(values.mobile)) {
-      errors.mobile = "please enter a valid mobile number";
-    }
-    if (values.password.length < 8) {
-      errors.password = "Weak password. Please choose a stronger password.";
-    }
-    if (values.password !== values.confirmPassword) {
-      errors.confirmPassword = "password do not match ,please try again";
-    }
 
-    return errors;
-  }
-
-  console.log(error);
 
   return (
     <div className="flex  font-[Ubuntu]  justify-center items-center min-h-screen">
@@ -232,11 +215,11 @@ const Signup = () => {
               </div>
             </div>
             <div className="flex justify-end mt-10 mr-10">
-              {/* <Link to='/describe'> */}
+             
               <button className="border bg-[#3981b6] p-3 w-[130px] rounded-full text-base text-white font-semibold hover:bg-white hover:text-[#3981b6] ">
                 SignUp
               </button>
-              {/* </Link> */}
+         
             </div>
           </form>
 

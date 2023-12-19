@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Document, Page } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./mypdf.css";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ExtractedData } from "../../redux/Extractedfile";
 import Error from "./Error";
+import instance from "../../utils/axios";
 
 function PdfComp(props) {
   const [numPages, setNumPages] = useState(0);
@@ -37,7 +37,7 @@ function PdfComp(props) {
   const createSelectedPdf = async () => {       // sending the  user selelcte page number and  pdf _id to server  side 
     try {
       const id = pdfInfo.id;
-      const response = await axios.post("http://localhost:5000/extract", {
+      const response = await instance.post("/extract", {
         _id: id,
         selectedpages: selectedPages,
       });
