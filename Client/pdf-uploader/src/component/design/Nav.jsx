@@ -49,14 +49,7 @@ const Nav = () => {
             <div class=" text-xl md:text-3xl">
               <ion-icon name="person-circle-outline"></ion-icon>
             </div>
-            <div>
-              <button
-                onClick={()=>handleClick()}
-                className="bg-[#3981b6] p-1 md:p-2 w-[50px] md:w-[90px] rounded-2xl shadow-md text-white text-xs md:text-lg font-semibold"
-              >
-                Logout
-              </button>
-            </div>
+           
           </div>
         </div>
       </nav>

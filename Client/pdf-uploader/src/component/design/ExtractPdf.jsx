@@ -6,9 +6,23 @@ import { Viewer } from "@react-pdf-viewer/core";
 import { useSelector } from "react-redux";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "./mypdf.css";
+import useLogout from "../../hooks/useLogout";
+import { useNavigate } from "react-router-dom";
 
 const ExtractPdf = () => {
   const defaultLayoutPluginInstance = defaultLayoutPlugin(); // from react-pdf-viewer
+ const navigate=useNavigate()
+const logout=useLogout()
+
+
+  const handleClick = async () => {
+    try {
+      await logout();
+      navigate("/login");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   const { pdfData } = useSelector((state) => state.extractedData);
   console.log(pdfData);
@@ -30,6 +44,14 @@ const ExtractPdf = () => {
         </div>
 
         <div className=" mr-5 md:mr-16 mt-7 flex gap-x-6 md:gap-x-10">
+        <div>
+              <button
+                onClick={()=>handleClick()}
+                className="bg-[#3981b6] p-1 md:p-2 w-[50px] md:w-[90px] rounded-2xl shadow-md text-white text-xs md:text-lg font-semibold"
+              >
+                Logout
+              </button>
+            </div>
           <p className="text-[#3189b6] text-base md:text-xl lg:text-2xl font-bold">
             Pdf- <span className="text-[#1AACAC]">Uploader</span>
           </p>
